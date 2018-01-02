@@ -7,7 +7,7 @@
 var utils   = require(__dirname + '/lib/utils'); // Get common adapter utils
 var gpio;
 
-var adapter = utils.adapter({
+var adapter = utils.Adapter({
     name: 'rpi2',
 
     ready: function () {
@@ -164,7 +164,7 @@ function parser() {
                     adapter.log.debug(er.stack);
                     if (er.pid) console.log('%s (pid: %d) exited with status %d',
                         er.file, er.pid, er.status);
-                    // do not process if exec fails 
+                    // do not process if exec fails
                     continue;
                 }
 
