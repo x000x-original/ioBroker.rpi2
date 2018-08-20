@@ -59,11 +59,13 @@
             }
 
             if (attr === 'enabled') {
+                var $input = $('[data-index="' + index + '"][data-option="input"]');
                 if (data[index][attr] === 'true' || data[index][attr] === true) {
-                    $('[data-index="' + index + '"][data-option="input"]').prop('disabled', false);
+                    $input.removeClass('disabled');
                 } else {
-                    $('[data-index="' + index + '"][data-option="input"]').prop('disabled', true);
+                    $input.addClass('disabled');
                 }
+                $input.select();
             }
 
             $(this).on('change', function () {
@@ -71,14 +73,17 @@
                 var attr  = $(this).data('option');
                 var index = $(this).data('index');
                 if (attr === 'enabled') {
+                    var $input = $('[data-index="' + index + '"][data-option="input"]');
                     if ($(this).prop('checked')) {
-                        $('[data-index="' + index + '"][data-option="input"]').prop('disabled', false);
+                        $input.removeClass('disabled');
                     } else {
-                        $('[data-index="' + index + '"][data-option="input"]').prop('disabled', true);
+                        $input.addClass('disabled');
                     }
+                    $input.select();
                 }
             });
         }).find('select').select();
+        
         M.updateTextFields();
 
         // workaround for materialize checkbox problem
