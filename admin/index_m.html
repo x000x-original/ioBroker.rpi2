@@ -1,13 +1,17 @@
 <html>
 <head>
-<link rel="stylesheet" type="text/css" href="../../lib/css/themes/jquery-ui/redmond/jquery-ui.min.css"/>
-<script type="text/javascript" src="../../lib/js/jquery-1.11.1.min.js"></script>
-<script type="text/javascript" src="../../socket.io/socket.io.js"></script>
-<script type="text/javascript" src="../../lib/js/jquery-ui-1.10.3.full.min.js"></script>
+    <meta charset="UTF-8">
+    <!-- Materialze style -->
+    <link rel="stylesheet" type="text/css" href="../../css/adapter.css"/>
+    <link rel="stylesheet" type="text/css" href="../../lib/css/materialize.css">
 
-<link rel="stylesheet" type="text/css" href="../../css/adapter.css"/>
-<script type="text/javascript" src="../../js/translate.js"></script>
-<script type="text/javascript" src="../../js/adapter-settings.js"></script>
+    <script type="text/javascript" src="../../lib/js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="../../socket.io/socket.io.js"></script>
+
+    <script type="text/javascript" src="../../js/translate.js"></script>
+    <script type="text/javascript" src="../../lib/js/materialize.js"></script>
+    <script type="text/javascript" src="../../js/adapter-settings.js"></script>
+    <script type="text/javascript" src="words.js"></script>
 
 <style>
     table {
@@ -33,11 +37,11 @@
             if (!data[allowedGPIOs[p]]) data[allowedGPIOs[p]] = {enabled: false, input: 'false'};
             text += '<tr>';
             text += '<td style="text-align: center">' + allowedGPIOs[p] + '</td>';
-            text += '<td style="text-align: center"><input class="gpio-value" type="checkbox" data-index="' + allowedGPIOs[p] + '" data-option="enabled"/></td>';
+            text += '<td style="text-align: center"><input class="gpio-value" type="checkbox" data-index="' + allowedGPIOs[p] + '" data-option="enabled"/><span></span></td>';
             text += '<td style="text-align: center"><select class="gpio-value" data-index="' + allowedGPIOs[p] + '" data-option="input">' +
                             '<option value="false">' + _('out') + '</option>' +
                             '<option value="true">'  + _('in') + '</option>' +
-                    '</select></td>';
+                    '</select><label></label></td>';
             text += '</tr>';
             if (p === Math.round(allowedGPIOs.length / 2) - 1) {
                 $('#gpios1').html(text);
@@ -74,8 +78,18 @@
                     }
                 }
             });
+        }).find('select').select();
+        M.updateTextFields();
+
+        // workaround for materialize checkbox problem
+        $('.gpio-value').find('input[type="checkbox"]+span').off('click').on('click', function () {
+            var $input = $(this).prev();
+            if (!$input.prop('disabled')) {
+                $input.prop('checked', !$input.prop('checked')).trigger('change');
+            }
         });
     }
+
     function getGpios() {
         var data = [];
 
@@ -116,7 +130,6 @@
         }
         onChange(false);
         showGpios(settings.gpios || [], onChange);
-        $('#tabs').tabs();
     }
 
     function save(callback) {
@@ -137,60 +150,64 @@
 </script>
 </head>
 <body>
-<div id="adapter-container">
-    <table><tr>
-        <td><img src="rpi.png" width="64" height="64"></td>
-        <td style="padding-top: 20px;padding-left: 10px"><h3 class="translate">RPI-Monitor Adapter settings</h3></td>
-    </tr></table>
-
-    <div id="tabs">
-        <ul>
-            <li><a href="#tabs-1" class="translate">Poll</a></li>
-            <li><a href="#tabs-2" class="translate">GPIOs</a></li>
-        </ul>
-        <div id="tabs-1">
-            <table>
-                <tbody>
-                    <tr>
-                        <td class="translate">CPU:</td>
-                        <td><input class="value" id="c_cpu" type="checkbox"/></td>
-                    </tr>
-                    <tr>
-                        <td class="translate">Raspberry:</td>
-                        <td><input class="value" id="c_raspberry" type="checkbox"/></td>
-                    </tr>
-                    <tr>
-                        <td class="translate">Memory:</td>
-                        <td><input class="value" id="c_memory" type="checkbox"/></td>
-                    </tr>
-                    <tr>
-                        <td class="translate">Network:</td>
-                        <td><input class="value" id="c_network" type="checkbox"/></td>
-                    </tr>
-                    <tr>
-                        <td class="translate">SDCard:</td>
-                        <td><input class="value" id="c_sdcard" type="checkbox"/></td>
-                    </tr>
-                    <tr>
-                        <td class="translate">Swap:</td>
-                        <td><input class="value" id="c_swap" type="checkbox"/></td>
-                    </tr>
-                    <tr>
-                        <td class="translate">Temperature:</td>
-                        <td><input class="value" id="c_temperature" type="checkbox"/></td>
-                    </tr>
-                    <tr>
-                        <td class="translate">Uptime:</td>
-                        <td><input class="value" id="c_uptime" type="checkbox"/></td>
-                    </tr>
-                    <tr>
-                        <td class="translate">WLAN:</td>
-                        <td><input class="value" id="c_wlan" type="checkbox"/></td>
-                    </tr>
-                </tbody>
-            </table>
+<div class="m adapter-container">
+    <div class="row">
+        <div class="col s12">
+            <ul class="tabs">
+                <li class="tab col s5 m4"><a href="#tab-main" class="translate active">Main settings</a></li>
+                <li class="tab col s5 m4"><a href="#tab-gpios" class="translate">GPIOs</a></li>
+            </ul>
         </div>
-        <div id="tabs-2">
+        <div id="tab-main" class="col s12 page">
+            <div class="row">
+                <div class="col s6">
+                    <img src="rpi.png" class="logo">
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12 m12 l4">
+                    <input id="c_cpu" type="checkbox" class="value" />
+                    <span for="c_cpu" class="translate">CPU:</span>
+                </div>
+                <div class="input-field col s12 m6 l4">
+                    <input id="c_raspberry" type="checkbox" class="value" />
+                    <span for="c_raspberry" class="translate">Raspberry:</span>
+                </div>
+                <div class="input-field col s12 m6 l4">
+                    <input id="c_memory" type="checkbox" class="value" />
+                    <span for="c_memory" class="translate">Memory:</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12 m12 l4">
+                    <input id="c_network" type="checkbox" class="value" />
+                    <span for="c_network" class="translate">Network:</span>
+                </div>
+                <div class="input-field col s12 m6 l4">
+                    <input id="c_sdcard" type="checkbox" class="value" />
+                    <span for="c_sdcard" class="translate">SDCard:</span>
+                </div>
+                <div class="input-field col s12 m6 l4">
+                    <input id="c_swap" type="checkbox" class="value" />
+                    <span for="c_swap" class="translate">Swap:</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12 m12 l4">
+                    <input id="c_temperature" type="checkbox" class="value" />
+                    <span for="c_temperature" class="translate">Temperature:</span>
+                </div>
+                <div class="input-field col s12 m6 l4">
+                    <input id="c_uptime" type="checkbox" class="value" />
+                    <span for="c_uptime" class="translate">Uptime:</span>
+                </div>
+                <div class="input-field col s12 m6 l4">
+                    <input id="c_wlan" type="checkbox" class="value" />
+                    <span for="c_wlan" class="translate">WLAN:</span>
+                </div>
+            </div>
+        </div>
+        <div id="tab-gpios">
             <table>
                 <tr>
                     <td>

@@ -1,8 +1,11 @@
-node_modules
-templates
-.gitignore
-.idea
+gulpfile.js
 tasks
+.idea
+node_modules
+.git
 test
 .travis.yml
 appveyor.yml
+admin/i18n
+package-lock.json
+iob_npm.done

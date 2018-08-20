@@ -1,7 +1,7 @@
 {
   "name": "iobroker.rpi2",
   "description": "RPI-Monitor for ioBroker Installations",
-  "version": "0.3.2",
+  "version": "1.0.0",
   "engines": {
     "node": ">=0.12"
   },
@@ -13,18 +13,14 @@
     "versteckt <husky.koglhof@icloud.com>"
   ],
   "optionalDependencies": {
-    "rpi-gpio": "^0.7.0"
+    "rpi-gpio": "^1.0.0"
   },
   "dependencies": {
     "sync-exec": "^0.6.2"
   },
   "devDependencies": {
-    "grunt": "^1.0.1",
-    "grunt-replace": "^1.0.1",
-    "grunt-contrib-jshint": "^1.1.0",
-    "grunt-jscs": "^3.0.1",
-    "grunt-http": "^2.2.0",
-    "mocha": "^3.5.3",
+    "gulp": "^3.9.1",
+    "mocha": "^5.2.0",
     "chai": "^4.1.2"
   },
   "homepage": "https://github.com/ioBroker/ioBroker.rpi2",
@@ -49,7 +45,7 @@
   },
   "main": "main.js",
   "scripts": {
-    "test": "node node_modules/mocha/bin/mocha"
+    "test": "node node_modules/mocha/bin/mocha --exit"
   },
   "readmeFilename": "README.md"
 }

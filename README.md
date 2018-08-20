@@ -139,6 +139,9 @@ For instance PI2:
 
 ## Changelog
 
+### 1.0.0 (2018-08-20)
+ - (bluefox) Admin3 support
+
 ### 0.3.2 (2017-11-29)
  - (Homoran) fixed Mem available readings on Stretch
 
@@ -177,6 +180,6 @@ For instance PI2:
 
 ## License
 
-Copyright (c) 2015-2016 husky-koglhof <husky.koglhof@icloud.com>
+Copyright (c) 2015-2018 husky-koglhof <husky.koglhof@icloud.com>
 
 MIT License

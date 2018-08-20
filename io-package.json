@@ -3,12 +3,29 @@
         "name":                     "rpi2",
         "title":                    "RPI-Monitor",
         "desc":                     {
-			"en": "RPI-Monitor for ioBroker Installations",
-			"de": "RPI-Monitor für ioBroker",
-			"ru": "RPI-Монитор для ioBroker"
-		},
-        "version":                  "0.3.2",
+            "en": "RPI-Monitor",
+            "de": "RPI-Monitor",
+            "ru": "RPI-монитор",
+            "pt": "RPI-Monitor",
+            "nl": "RPI-Monitor",
+            "fr": "RPI-Monitor",
+            "it": "RPI-Monitor",
+            "es": "RPI-Monitor",
+            "pl": "Monitor RPI"
+        },
+        "version":                  "1.0.0",
         "news": {
+            "1.0.0": {
+                "en": "Admin3 support",
+                "de": "Admin3-Unterstützung",
+                "ru": "Поддержка Admin3",
+                "pt": "Suporte Admin3",
+                "nl": "Admin3-ondersteuning",
+                "fr": "Support Admin3",
+                "it": "Supporto per Admin3",
+                "es": "Soporte de Admin3",
+                "pl": "Obsługa Admin3"
+            },
             "0.3.2": {
                 "en": "fixed Mem available readings on Stretch",
                 "de": "mem available bei strech gefixt",
@@ -55,6 +72,7 @@
         "icon":                     "rpi.png",
         "type":                     "hardware",
 	    "enabled":					true,
+        "materialize":              true,
         "config":{
             "minWidth":   650,
             "width":      700,
