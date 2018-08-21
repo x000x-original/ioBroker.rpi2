@@ -140,7 +140,7 @@ For instance PI2:
 ## Changelog
 
 ### 1.0.0 (2018-08-20)
- - (bluefox) Admin3 support
+ - (bluefox) Admin3 support 
 
 ### 0.3.2 (2017-11-29)
  - (Homoran) fixed Mem available readings on Stretch
