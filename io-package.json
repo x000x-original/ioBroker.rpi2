@@ -1,8 +1,8 @@
 {
     "common": {
-        "name":                     "rpi2",
-        "title":                    "RPI-Monitor",
-        "desc":                     {
+        "name": "rpi2",
+        "title": "RPI-Monitor",
+        "desc": {
             "en": "RPI-Monitor",
             "de": "RPI-Monitor",
             "ru": "RPI-монитор",
@@ -11,9 +11,10 @@
             "fr": "RPI-Monitor",
             "it": "RPI-Monitor",
             "es": "RPI-Monitor",
-            "pl": "Monitor RPI"
+            "pl": "Monitor RPI",
+            "zh-cn": "RPI-监视器"
         },
-        "version":                  "1.0.0",
+        "version": "1.0.0",
         "news": {
             "1.0.0": {
                 "en": "Admin3 support",
@@ -24,62 +25,116 @@
                 "fr": "Support Admin3",
                 "it": "Supporto per Admin3",
                 "es": "Soporte de Admin3",
-                "pl": "Obsługa Admin3"
+                "pl": "Obsługa Admin3",
+                "zh-cn": "Admin3的支持"
             },
             "0.3.2": {
                 "en": "fixed Mem available readings on Stretch",
                 "de": "mem available bei strech gefixt",
-                "ru": "fixed Mem available readings on Stretch"
+                "ru": "fixed Mem available readings on Stretch",
+                "pt": "fixo Mem disponível leituras no Trecho",
+                "nl": "vaste Mem beschikbare metingen op Rek",
+                "fr": "fixe Mem disponible lectures sur le Tronçon",
+                "it": "fisso Mem disponibile letture Tratto",
+                "es": "fijo Mem disponible lecturas en el Tramo",
+                "pl": "stałej pamięci są dostępne czytania na odcinku",
+                "zh-cn": "固定Mem提供的读数在拉伸"
             },
-			"0.3.1": {
+            "0.3.1": {
                 "en": "Fixup swap_used calculation.",
                 "de": "Korrigiere swap_used Kalkulation",
-                "ru": "Исправлено вычисление swap_used"
+                "ru": "Исправлено вычисление swap_used",
+                "pt": "Ajuste swap_used de cálculo.",
+                "nl": "Correctie swap_used berekening.",
+                "fr": "Correction swap_used de calcul.",
+                "it": "Correzione swap_used di calcolo.",
+                "es": "Corrección swap_used de cálculo.",
+                "pl": "Obliczanie poprawki swap_used.",
+                "zh-cn": "链接地址swap_used计算。"
             },
             "0.3.0": {
                 "en": "Add GPIO direction indication",
                 "de": "GPIO Richtung States hinzugefügt",
-                "ru": "Добавлены состояния для индикации направления GPIO"
+                "ru": "Добавлены состояния для индикации направления GPIO",
+                "pt": "Adicionar GPIO direção indicação",
+                "nl": "Toevoegen GPIO richting aangeven",
+                "fr": "Ajouter GPIO indication de la direction",
+                "it": "Aggiungere GPIO indicazione di direzione",
+                "es": "Agregar GPIO indicación de la dirección",
+                "pl": "Dodaj wskazaniem kierunku linii GPIO ",
+                "zh-cn": "添加端口方向的指示"
             },
             "0.2.2": {
                 "en": "Use BCM enumeration",
                 "de": "Benutze BCM Numerierung",
-                "ru": "Используется BCM нумерация"
+                "ru": "Используется BCM нумерация",
+                "pt": "Usar o BCM enumeração",
+                "nl": "Gebruik BCM opsomming",
+                "fr": "Utiliser BCM énumération",
+                "it": "Uso miliardi di metri CUBI di enumerazione",
+                "es": "El uso de BCM enumeración",
+                "pl": "Używać wyliczenie mld m sześc. ",
+                "zh-cn": "使用BCM枚举"
             },
             "0.2.1": {
                 "en": "fix start of adapter",
                 "de": "Korrigiert Adapterstart",
-                "ru": "Исправлен старт драйвера"
+                "ru": "Исправлен старт драйвера",
+                "pt": "correcção início do adaptador",
+                "nl": "fix start van adapter",
+                "fr": "fix début de l'adaptateur",
+                "it": "fix inizio dell'adattatore",
+                "es": "revisión inicio de adaptador",
+                "pl": "naprawiono zasilacza",
+                "zh-cn": "修复启动的适配器"
             },
             "0.2.0": {
                 "en": "implement GPIOs control",
                 "de": "Implementiert die Steuerung von GPIOs",
-                "ru": "Добавлено управление GPIOs"
+                "ru": "Добавлено управление GPIOs",
+                "pt": "implementar GPIOs de controle",
+                "nl": "implementeren GPIOs controle",
+                "fr": "mettre en œuvre des GPIOs de contrôle",
+                "it": "implementare GPIOs di controllo",
+                "es": "implementar GPIOs de control",
+                "pl": "realizacja kontroli GPIO ",
+                "zh-cn": "实现Gpio控制"
             }
         },
-        "mode":                     "daemon",
-        "platform":                 "javascript/Node.js",
-        "os":                       ["linux"],
-        "loglevel":                 "info",
-        "keywords":                 ["ioBroker", "monitoring", "raspberry", "orangepi", "odroid", "bananapi", "gpio"],
-        "main":                     "main.js",
-        "authors": [
-            "Christian Baumgartner", "husky-koglhof <husky.koglhof@icloud.com>"
+        "mode": "daemon",
+        "platform": "javascript/Node.js",
+        "os": [
+            "linux"
         ],
-        "license":                  "MIT",
-        "singletonHost":             true,
-        "readme":                   "https://github.com/ioBroker/ioBroker.rpi2/blob/master/README.md",
-        "icon":                     "rpi.png",
-        "type":                     "hardware",
-	    "enabled":					true,
-        "materialize":              true,
-        "config":{
-            "minWidth":   650,
-            "width":      700,
-            "minHeight":  600,
-            "height":     600
+        "loglevel": "info",
+        "keywords": [
+            "ioBroker",
+            "monitoring",
+            "raspberry",
+            "orangepi",
+            "odroid",
+            "bananapi",
+            "gpio"
+        ],
+        "main": "main.js",
+        "authors": [
+            "Christian Baumgartner",
+            "husky-koglhof <husky.koglhof@icloud.com>"
+        ],
+        "license": "MIT",
+        "singletonHost": true,
+        "readme": "https://github.com/ioBroker/ioBroker.rpi2/blob/master/README.md",
+        "icon": "rpi.png",
+        "type": "hardware",
+        "enabled": true,
+        "materialize": true,
+        "config": {
+            "minWidth": 650,
+            "width": 700,
+            "minHeight": 600,
+            "height": 600
         },
-        "extIcon":                  "https://raw.githubusercontent.com/ioBroker/ioBroker.rpi2/master/admin/rpi.png"
+        "extIcon": "https://raw.githubusercontent.com/ioBroker/ioBroker.rpi2/master/admin/rpi.png"
     },
     "native": {
         "c_cpu": true,
@@ -222,12 +277,8 @@
                 "post": ""
             }
         },
-        "gpios": [
-
-        ]
+        "gpios": []
     },
-    "objects": [
-    ],
-    "instanceObjects": [
-    ]
+    "objects": [],
+    "instanceObjects": []
 }
