@@ -4,26 +4,28 @@
  *      License: MIT
  */
 
-var utils   = require(__dirname + '/lib/utils'); // Get common adapter utils
-var gpio;
+const utils   = require('./lib/utils'); // Get common adapter utils
+let gpio;
 
-var adapter = new utils.Adapter({
+const adapter = new utils.Adapter({
     name: 'rpi2',
 
     ready: function () {
+        config = adapter.config;
+
         if (adapter.config.forceinit) {
             adapter.objects.getObjectList({startkey: adapter.name + '.' + adapter.instance, endkey: adapter.name + '.' + adapter.instance + '\u9999'}, function (err, res) {
                 res = res.rows;
-                for (var i = 0; i < res.length; i++) {
-                    var id = res[i].doc.common.name;
+                for (let i = 0; i < res.length; i++) {
+                    const id = res[i].doc.common.name;
 
                     adapter.log.debug('Remove ' + id + ': ' + id);
 
-                    adapter.delObject(id, function (res, err) {
+                    adapter.delObject(id, (res, err) => {
                         if (res !== undefined && res !== 'Not exists') adapter.log.error('res from delObject: ' + res);
                         if (err !== undefined) adapter.log.error('err from delObject: ' + err);
                     });
-                    adapter.deleteState(id, function (res, err) {
+                    adapter.deleteState(id, (res, err) => {
                         if (res !== undefined && res !== 'Not exists') adapter.log.error('res from deleteState: ' + res);
                         if (err !== undefined) adapter.log.error('err from deleteState: ' + err);
                     });
@@ -32,10 +34,10 @@ var adapter = new utils.Adapter({
         }
         adapter.subscribeStates('*');
 
-        adapter.objects.getObjectList({include_docs: true}, function (err, res) {
+        adapter.objects.getObjectList({include_docs: true}, (err, res) => {
             res = res.rows;
             objects = {};
-            for (var i = 0; i < res.length; i++) {
+            for (let i = 0; i < res.length; i++) {
                 objects[res[i].doc._id] = res[i].doc;
             }
 
@@ -47,7 +49,7 @@ var adapter = new utils.Adapter({
         adapter.log.debug('stateChange for ' + id + ' found state = ' + JSON.stringify(state));
         if (state && !state.ack) {
             if (id.indexOf('gpio.') !== -1) {
-                var parts = id.split('.');
+                const parts = id.split('.');
                 parts.pop(); // remove state
                 writeGpio(parts.pop(), state.val);
             }
@@ -55,11 +57,9 @@ var adapter = new utils.Adapter({
     },
     unload: function (callback) {
         if (gpio) {
-            gpio.destroy(function () {
-                if (callback) callback ();
-            });
+            gpio.destroy(() => callback && callback());
         } else {
-            if (callback) callback ();
+            callback && callback()
         }
     }
 });
@@ -80,7 +80,7 @@ function writeGpio(port, value) {
 
     try {
         if (gpio) {
-            gpio.write(port, value, function (err) {
+            gpio.write(port, value, err => {
                 if (err) {
                     adapter.log.error(err);
                 } else {
@@ -96,19 +96,19 @@ function writeGpio(port, value) {
     }
 }
 
-var objects;
-var exec;
-var rpi      = {};
-var table    = {};
-var config   = adapter.config;
-var oldstyle = false;
+let objects;
+let exec;
+const rpi      = {};
+const table    = {};
+let config;
+let oldstyle = false;
 
 function main() {
     // TODO: Check which Objects we provide
     setInterval(parser, adapter.config.interval || 60000);
 
-    var version = process.version;
-    var va = version.split('.');
+    const version = process.version;
+    const va = version.split('.');
     if (va[0] === 'v0' && va[1] === '10') {
         adapter.log.debug('NODE Version = ' + version + ', we need new exec-sync');
         exec     = require('sync-exec');
@@ -129,30 +129,30 @@ function parser() {
     if (config === undefined) {
         config = adapter.config;
     }
-    for (var c in config) {
+    for (const c in config) {
         if (!config.hasOwnProperty(c)) continue;
 
         adapter.log.debug('PARSING: ' + c);
 
         if (c.indexOf('c_') !== 0 && config['c_' + c] === true) {
             table[c] = new Array(20);
-            var o = config[c];
-            for (var i in o) {
+            const o = config[c];
+            for (const i in o) {
                 if (!o.hasOwnProperty(i)) continue;
                 adapter.log.debug('    PARSING: ' + i);
-                var object = o[i];
-                var command = object.command;
-                var regexp;
+                const object = o[i];
+                const command = object.command;
+                let regexp;
                 if (object.multiline !== undefined) {
                     regexp = new RegExp(object.regexp, 'm');
                 } else {
                     regexp = new RegExp(object.regexp);
                 }
-                var post = object.post;
+                const post = object.post;
 
                 adapter.log.debug('---> ' + command);
 
-                var stdout;
+                let stdout;
                 try {
                     if (oldstyle) {
                         stdout = exec(command).stdout;
@@ -168,7 +168,7 @@ function parser() {
                     continue;
                 }
 
-                var match = regexp.exec(stdout);
+                const match = regexp.exec(stdout);
                 adapter.log.debug('---> REGEXP: ' + regexp);
                 if (match !== undefined && match !== null && match.length !== undefined) {
                     adapter.log.debug('GROUPS: ' + match.length);
@@ -176,10 +176,10 @@ function parser() {
                 // TODO: if Group Match is bigger then 2
                 // split groups and header into seperate objects
                 if (match !== undefined && match !== null && match.length > 2) {
-                    var lname = i.split(',');
-                    for (var m = 1; m < match.length; m++) {
-                        var value = match[m];
-                        var name = lname[m - 1];
+                    const lname = i.split(',');
+                    for (let m = 1; m < match.length; m++) {
+                        const value = match[m];
+                        const name = lname[m - 1];
                         adapter.log.debug('MATCHING: ' + value);
                         adapter.log.debug('NAME: ' + name + ', VALULE: ' + value);
 
@@ -188,7 +188,7 @@ function parser() {
                     }
                 } else {
                     adapter.log.debug('---> POST:   ' + post);
-                    var value;
+                    let value;
                     if (match !== undefined && match !== null) {
                         value = match[1];
                     } else {
@@ -202,13 +202,13 @@ function parser() {
     }
 
     // TODO: Parse twice to get post data and evaluate
-    for (c in config) {
+    for (const c in config) {
         if (!config.hasOwnProperty(c)) continue;
         adapter.log.debug('CURRENT = ' + c + ' ' + config['c_' + c]);
         adapter.log.debug(c.indexOf('c_'));
         if (c.indexOf('c_') !== 0 && config['c_' + c]) {
             if (objects[c] === undefined) {
-                var stateObj = {
+                const stateObj = {
                     common: {
                         name:   c, // You can add here some description
                         role:   'sensor'
@@ -219,26 +219,28 @@ function parser() {
 
                 adapter.extendObject(c, stateObj);
             }
-            var o = config[c];
-            for (var i in o) {
-                if (!o.hasOwnProperty(i)) continue;
-                var object = o[i];
-                var command = object.command;
-                var post = object.post;
+            const o = config[c];
+            for (const i in o) {
+                if (!o.hasOwnProperty(i)) {
+                    continue;
+                }
+                const object = o[i];
+                const command = object.command;
+                const post = object.post;
 
                 adapter.log.debug('---> POST:   ' + post + ' for ' + i + ' in ' + o);
-                var value;
+                let value;
 
-                var lname = i.split(',');
+                const lname = i.split(',');
                 if (lname !== undefined && lname.length > 1) {
-                    for (var m = 0; m < lname.length; m++) {
-                        var name = lname[m];
+                    for (let m = 0; m < lname.length; m++) {
+                        const name = lname[m];
                         value = rpi[name];
 
                         // TODO: Check if value is number and format it 2 Digits
                         if (!isNaN(value)) {
                             value = parseFloat(value);
-                            var re = new RegExp(/^\d+\.\d+$/);
+                            const re = new RegExp(/^\d+\.\d+$/);
                             if (re.exec(value)) {
                                 value = value.toFixed(2);
                             }
@@ -247,11 +249,11 @@ function parser() {
                         adapter.log.debug('MATCHING: ' + value);
                         adapter.log.debug('NAME: ' + name + ' VALULE: ' + value);
 
-                        var objectName = adapter.name + '.' + adapter.instance + '.' + c + '.' + name;
+                        const objectName = adapter.name + '.' + adapter.instance + '.' + c + '.' + name;
                         adapter.log.debug('SETSTATE FOR ' + objectName + ' VALUE = ' + value);
                         if (objects[objectName] === undefined) {
-                            // TODO Create an Objecttree
-                            var stateObj = {
+                            // TODO Create an Object tree
+                            const stateObj = {
                                 common: {
                                     name:  objectName, // You can add here some description
                                     read:  true,
@@ -285,17 +287,17 @@ function parser() {
                         // TODO: Check if value is number and format it 2 Digits
                         if (!isNaN(value)) {
                             value = parseFloat(value);
-                            var r = new RegExp(/^\d+\.\d+$/);
+                            const r = new RegExp(/^\d+\.\d+$/);
                             if (r.exec(value)) {
                                 value = value.toFixed(2);
                             }
                         }
 
-                        var objectName = adapter.name + '.' + adapter.instance + '.' + c + '.' + i;
+                        const objectName = adapter.name + '.' + adapter.instance + '.' + c + '.' + i;
                         adapter.log.debug('SETSTATE FOR ' + objectName + ' VALUE = ' + value);
                         if (objects[objectName] === undefined) {
                             // TODO Create an Objecttree
-                            var stateObj = {
+                            const stateObj = {
                                 common: {
                                     name:  objectName, // You can add here some description
                                     read:  true,
@@ -327,9 +329,11 @@ function parser() {
 }
 
 function readValue(port) {
-    if (!gpio) return adapter.log.error('GPIO is not initialized!');
+    if (!gpio) {
+        return adapter.log.error('GPIO is not initialized!');
+    }
 
-    gpio.read(port, function (err, value) {
+    gpio.read(port, (err, value) => {
         if (err) {
             adapter.log.error('Cannot read port ' + port + ': ' + err);
         } else {
@@ -339,7 +343,7 @@ function readValue(port) {
 }
 
 function syncPort(port, data, callback) {
-    adapter.getObject('gpio.' + port + '.state', function (err, obj) {
+    adapter.getObject('gpio.' + port + '.state', (err, obj) => {
         if (data.enabled) {
             if (data.input === 'true')  data.input = true;
             if (data.input === 'false') data.input = false;
@@ -358,27 +362,23 @@ function syncPort(port, data, callback) {
                     },
                     type: 'state'
                 };
-                adapter.setObject('gpio.' + port + '.state', obj, function () {
-                    syncPortDirection(port, data, callback);
-                });
+                adapter.setObject('gpio.' + port + '.state', obj, () =>
+                    syncPortDirection(port, data, callback));
             } else {
                 if (obj.common.read !== data.input) {
                     obj.common.read  = data.input;
                     obj.common.write = !data.input;
-                    adapter.setObject('gpio.' + port + '.state', obj, function () {
-                        syncPortDirection(port, data, callback);
-                    });
+                    adapter.setObject('gpio.' + port + '.state', obj, () =>
+                        syncPortDirection(port, data, callback));
                 } else {
                     syncPortDirection(port, data, callback);
                 }
             }
         } else {
             if (obj && obj.common) {
-                adapter.delObject('gpio.' + port + '.state', function () {
-                    adapter.delState('gpio.' + port + '.state', function () {
-                        syncPortDirection(port, data, callback);
-                    });
-                });
+                adapter.delObject('gpio.' + port + '.state', () =>
+                    adapter.delState('gpio.' + port + '.state', () =>
+                        syncPortDirection(port, data, callback)));
             } else {
                 syncPortDirection(port, data, callback);
             }
@@ -387,7 +387,7 @@ function syncPort(port, data, callback) {
 }
 
 function syncPortDirection(port, data, callback) {
-    adapter.getObject('gpio.' + port + '.isInput', function (err, obj) {
+    adapter.getObject('gpio.' + port + '.isInput', (err, obj) => {
         if (data.enabled) {
             if (err || !obj || !obj.common) {
                 obj = {
@@ -403,17 +403,15 @@ function syncPortDirection(port, data, callback) {
                     },
                     type: 'state'
                 };
-                adapter.setObject('gpio.' + port + '.isInput', obj, function () {
-                    adapter.setState('gpio.' + port + '.isInput', !data.input, true, callback);
-                });
+                adapter.setObject('gpio.' + port + '.isInput', obj, () =>
+                    adapter.setState('gpio.' + port + '.isInput', !data.input, true, callback));
             } else {
                 adapter.setState('gpio.' + port + '.isInput', data.input, true, callback);
             }
         } else {
             if (obj && obj.common) {
-                adapter.delObject('gpio.' + port + '.isInput', function () {
-                    adapter.delState('gpio.' + port + '.isInput', callback);
-                });
+                adapter.delObject('gpio.' + port + '.isInput', () =>
+                    adapter.delState('gpio.' + port + '.isInput', callback));
             } else {
                 if (callback) callback();
             }
@@ -422,11 +420,11 @@ function syncPortDirection(port, data, callback) {
 }
 
 function initPorts() {
-    var anyEnabled = false;
-    var anyInputs  = false;
+    let anyEnabled = false;
+    let anyInputs  = false;
 
     if (adapter.config.gpios && adapter.config.gpios.length) {
-        for (var pp = 0; pp < adapter.config.gpios.length; pp++) {
+        for (let pp = 0; pp < adapter.config.gpios.length; pp++) {
             if (!adapter.config.gpios[pp] || !adapter.config.gpios[pp].enabled) continue;
             anyEnabled = true;
 
@@ -447,8 +445,8 @@ function initPorts() {
     }
 
     if (adapter.config.gpios && adapter.config.gpios.length) {
-        var count = 0;
-        for (var p = 0; p < adapter.config.gpios.length; p++) {
+        let count = 0;
+        for (let p = 0; p < adapter.config.gpios.length; p++) {
 
             if (!adapter.config.gpios[p]) continue;
 
@@ -461,7 +459,7 @@ function initPorts() {
                 if (adapter.config.gpios[p].input) {
                     count++;
                     (function (port){
-                        gpio.setup(port, gpio.DIR_IN, gpio.EDGE_BOTH, function (err) {
+                        gpio.setup(port, gpio.DIR_IN, gpio.EDGE_BOTH, err => {
                             if (!err) {
                                 readValue(port);
                             } else {
@@ -470,7 +468,7 @@ function initPorts() {
                             if (!--count) {
                                 adapter.log.debug('Register onchange handler');
                                 // register on change handler
-                                gpio.on('change', function (port, value) {
+                                gpio.on('change', (port, value) => {
                                     adapter.log.debug('GPIO change on port ' + port + ': ' + value);
                                     adapter.setState('gpio.' + port + '.state', !!value, true);
                                 });
@@ -479,9 +477,8 @@ function initPorts() {
                     })(p);
                 } else {
                     (function (port){
-                        gpio.setup(port, gpio.DIR_OUT, function (err) {
-                            if (err) adapter.log.error('Cannot setup port ' + port + ' as output: ' + err);
-                        });
+                        gpio.setup(port, gpio.DIR_OUT, err =>
+                            err && adapter.log.error('Cannot setup port ' + port + ' as output: ' + err));
                     })(p);
                 }
             }
