@@ -3,6 +3,7 @@
  *
  *      License: MIT
  */
+'use strict';
 
 const utils   = require('./lib/utils'); // Get common adapter utils
 let gpio;
