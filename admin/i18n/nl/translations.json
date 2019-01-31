@@ -1,0 +1,19 @@
+{
+    "CPU:": "CPU",
+    "Enabled": "Ingeschakeld",
+    "GPIOs": "GPIOs",
+    "Memory:": "Geheugen",
+    "Network:": "Netwerk",
+    "Poll": "poll",
+    "Port": "Haven",
+    "RPI-Monitor Adapter settings": "RPI-Monitor Adapter-instellingen",
+    "Raspberry:": "Framboos",
+    "SDCard:": "SD-kaart",
+    "Swap:": "ruil",
+    "Temperature:": "Temperatuur",
+    "Type": "Type",
+    "Uptime:": "Uptime",
+    "WLAN:": "WLAN",
+    "in": "in",
+    "out": "uit"
+}
