@@ -123,7 +123,7 @@
         ],
         "license": "MIT",
         "singletonHost": true,
-        "readme": "https://github.com/ioBroker/ioBroker.rpi2/blob/master/README.md",
+        "readme": "https://github.com/iobroker-community-adapters/ioBroker.rpi2/blob/master/README.md",
         "icon": "rpi.png",
         "type": "hardware",
         "enabled": true,
@@ -134,7 +134,7 @@
             "minHeight": 600,
             "height": 600
         },
-        "extIcon": "https://raw.githubusercontent.com/ioBroker/ioBroker.rpi2/master/admin/rpi.png"
+        "extIcon": "https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.rpi2/master/admin/rpi.png"
     },
     "native": {
         "c_cpu": true,
