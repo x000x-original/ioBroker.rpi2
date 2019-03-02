@@ -24,7 +24,7 @@
     "chai": "^4.1.2",
     "axios": "^0.18.0"
   },
-  "homepage": "https://github.com/ioBroker/ioBroker.rpi2",
+  "homepage": "https://github.com/iobroker-community-adapters/ioBroker.rpi2",
   "license": "MIT",
   "keywords": [
     "ioBroker",
@@ -36,13 +36,13 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/ioBroker/ioBroker.rpi2"
+    "url": "https://github.com/iobroker-community-adapters/ioBroker.rpi2"
   },
   "os": [
     "linux"
   ],
   "bugs": {
-    "url": "https://github.com/ioBroker/ioBroker.rpi2/issues"
+    "url": "https://github.com/iobroker-community-adapters/ioBroker.rpi2/issues"
   },
   "main": "main.js",
   "scripts": {
